@@ -30,6 +30,8 @@ public interface Session extends
         Capability.LoadByInstances,
         Capability.LoadByType,
         Capability.Save,
+        Capability.Manage,
+        Capability.Flush,
         Capability.Delete,
         Capability.Transactions,
         Capability.ExecuteQueries,

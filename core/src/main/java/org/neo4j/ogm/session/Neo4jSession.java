@@ -53,6 +53,7 @@ public class Neo4jSession implements Session {
     private final LoadByIdsDelegate loadByIdsHandler = new LoadByIdsDelegate(this);
     private final LoadByInstancesDelegate loadByInstancesDelegate = new LoadByInstancesDelegate(this);
     private final SaveDelegate saveDelegate = new SaveDelegate(this);
+    private final ManageDelegate manageDelegate = new ManageDelegate(this);
     private final DeleteDelegate deleteDelegate = new DeleteDelegate(this);
     private final ExecuteQueriesDelegate executeQueriesDelegate = new ExecuteQueriesDelegate(this);
     private final TransactionsDelegate transactionsDelegate = new TransactionsDelegate(this);
@@ -430,12 +431,33 @@ public class Neo4jSession implements Session {
         saveDelegate.save(object, depth);
     }
 
+    /*
+    *----------------------------------------------------------------------------------------------------------
+    * ManageDelegate
+    *----------------------------------------------------------------------------------------------------------
+    */
+
+    @Override
+    public <T> void manage(T object) {
+        manageDelegate.manage(object);
+    }
 
     /*
     *----------------------------------------------------------------------------------------------------------
-    * TransactionsDelegate
+    * FlushDelegate
     *----------------------------------------------------------------------------------------------------------
     */
+
+    @Override
+    public void flush() {
+        manageDelegate.flush();
+    }
+
+    /*
+            *----------------------------------------------------------------------------------------------------------
+            * TransactionsDelegate
+            *----------------------------------------------------------------------------------------------------------
+            */
     @Override
     public Transaction beginTransaction() {
         return transactionsDelegate.beginTransaction();

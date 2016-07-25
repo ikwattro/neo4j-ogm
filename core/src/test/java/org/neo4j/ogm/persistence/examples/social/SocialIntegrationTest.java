@@ -106,6 +106,36 @@ public class SocialIntegrationTest extends MultiDriverTestClass {
         assertEquals(userA, userD.getFriends().get(0));
     }
 
+    @Test
+    public void testManageAndFlush() {
+        Long start1 = System.currentTimeMillis();
+        for ( int i = 0; i < 1000; ++i ) {
+            User user = new User("user " + i);
+            session.save(user);
+        }
+        System.out.println(System.currentTimeMillis() - start1);
+        // This was a dry run for warming up
+
+        session.clear();
+
+        Long start2 = System.currentTimeMillis();
+        for ( int i = 0; i < 1000; ++i ) {
+            User user = new User("user " + i);
+            session.save(user);
+        }
+        System.out.println(System.currentTimeMillis() - start2);
+        session.clear();
+
+
+        for ( int i = 0; i < 1000; ++i ) {
+            User user = new User("user " + i);
+            session.manage(user);
+        }
+        Long start = System.currentTimeMillis();
+        session.flush();
+        System.out.println(System.currentTimeMillis() - start);
+    }
+
     /**
      * @see DATAGRAPH-594
      */

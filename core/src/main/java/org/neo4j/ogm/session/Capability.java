@@ -102,6 +102,14 @@ public interface Capability {
         <T> void save(T object, int depth);
     }
 
+    interface Manage {
+        <T> void manage(T object);
+    }
+
+    interface Flush {
+        void flush();
+    }
+
     interface Delete {
         <T> void delete(T object);
         <T> void deleteAll(Class<T> type);
