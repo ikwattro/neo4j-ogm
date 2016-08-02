@@ -15,7 +15,9 @@
 package org.neo4j.ogm.domain.social;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.neo4j.ogm.annotation.Relationship;
 
@@ -32,7 +34,15 @@ public class Person {
 	@Relationship(type = "LIKES", direction = "OUTGOING")
 	private List<Person> peopleILike=new ArrayList<>();
 
+	@Relationship(type = "FOLLOWS", direction = Relationship.OUTGOING)
+	private Set<Person> personsFollowed;
+
+	@Relationship(type = "FOLLOWS", direction = Relationship.INCOMING)
+	private Set<Person> personsFollowingMe;
+
 	public Person() {
+		personsFollowed = new HashSet<>();
+		personsFollowingMe = new HashSet<>();
 	}
 
 	public Person(String name) {
@@ -57,5 +67,26 @@ public class Person {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<Person> getPersonsFollowed() {
+		return personsFollowed;
+	}
+
+	public Set<Person> getPersonsFollowingMe() {
+		return personsFollowingMe;
+	}
+
+	public void addPersonToFollow(Person person) {
+		personsFollowed.add(person);
+	}
+
+	public void addPersonFollowingMe(Person person) {
+		personsFollowingMe.add(person);
+	}
+
+	public void addPersonFollowBiDirectional(Person person) {
+		personsFollowed.add(person);
+		person.addPersonFollowingMe(this);
 	}
 }
